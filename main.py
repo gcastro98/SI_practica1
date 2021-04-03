@@ -111,17 +111,60 @@ if __name__ == '__main__':
     print(f'Valor de la desviacion tipica de la duracion de las TVSHOWS: {np.std(season):,.2f}')
 '''
 
-def count(dbc):
-    dfm = pd.read_sql("SELECT *  FROM MOVIE", con=dbc)
-    dft = pd.read_sql("SELECT *  FROM TV_SHOW", con=dbc)
-    print(dfm)
+def average_movie(dfm):
+    return np.average(dfm["duration"])
+
+def average_tv_show(dft):
+    return np.average(dft["duration"])
+
+def std_movie(dfm):
+    return np.std(dfm["duration"])
+
+def std_tv_show(dft):
+    return np.std(dft["duration"])
+
+def count(dfm, dft):
     return dfm.notnull().sum() + dft.notnull().sum()
+
+def minimun(df, s):
+    return np.min(df[s])
+
+def maximun(df, s):
+    return np.max(df[s])
+
 
 if __name__ == '__main__':
     dbc = config.get_connection(2);
-    # print(count(dbc))
+    dfm = pd.read_sql("SELECT *  FROM MOVIE", con=dbc)
+    dft = pd.read_sql("SELECT *  FROM TV_SHOW", con=dbc)
+    print(count(dfm, dft))
+    print()
+    print("{:.2f}".format(average_movie(dfm)))
+    print()
+    print("{:.2f}".format(average_tv_show(dft)))
+    print()
+    print("{:.2f}".format(std_movie(dfm)))
+    print()
+    print("{:.2f}".format(std_tv_show(dft)))
+    print()
+    print(minimun(dfm,"duration"))
+    print(maximun(dfm,"duration"))
+    print()
+    print(minimun(dft,"duration"))
+    print(maximun(dft,"duration"))
+    print()
+    print(minimun(dfm,"release_year"))
+    print(maximun(dfm,"release_year"))
+    print()
+    print(minimun(dft,"release_year"))
+    print(maximun(dft,"release_year"))
+
+    dfml = dfm[dfm['duration'] >= 90]
+    dfmc = dfm[dfm['duration'] < 90]
+    dftl = dft[dft['duration'] >= 3]
+    dftc = dft[dft['duration'] < 3]
     # db.create_tables()
-    db.import_data(dbc,".\\res\\data.txt")
+    # db.import_data(dbc,".\\res\\data.txt")
     # db_connector = get_connection()
     # df = load_to_dataframe(db_connector)
     # calculo_duracion(df)
