@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import db_start as db
 import config
+import insert_users as iu
 
 
 def get_connection():
@@ -111,6 +112,13 @@ if __name__ == '__main__':
     print(f'Valor de la desviacion tipica de la duracion de las TVSHOWS: {np.std(season):,.2f}')
 '''
 
+
+def minimun(df, s):
+    return np.min(df[s])
+
+def maximun(df, s):
+    return np.max(df[s])
+
 def average_movie(dfm):
     return np.average(dfm["duration"])
 
@@ -123,46 +131,133 @@ def std_movie(dfm):
 def std_tv_show(dft):
     return np.std(dft["duration"])
 
-def count(dfm, dft):
-    return dfm.notnull().sum() + dft.notnull().sum()
+def count(df):
+    return df.notnull().sum()
 
-def minimun(df, s):
-    return np.min(df[s])
-
-def maximun(df, s):
-    return np.max(df[s])
+def count_null(df):
+    return df.isnull().sum()
 
 
 if __name__ == '__main__':
     dbc = config.get_connection(2);
     dfm = pd.read_sql("SELECT *  FROM MOVIE", con=dbc)
     dft = pd.read_sql("SELECT *  FROM TV_SHOW", con=dbc)
-    print(count(dfm, dft))
     print()
+    print()
+    print("Número de muestras (valores distintos de missing).")
+    print(count(dfm) + count(dft))
+    print()
+    print("Media de la columna duración para peliculas")
     print("{:.2f}".format(average_movie(dfm)))
-    print()
+    print("Media de la columna duración para tv shows")
     print("{:.2f}".format(average_tv_show(dft)))
     print()
+    print("Desviación estándar de la columna duración en peliculas.")
     print("{:.2f}".format(std_movie(dfm)))
-    print()
+    print("Desviación estándar de la columna duración en tv shows.")
     print("{:.2f}".format(std_tv_show(dft)))
     print()
+    print("Duración mínima en películas")
     print(minimun(dfm,"duration"))
+    print("Duración máxima en películas")
     print(maximun(dfm,"duration"))
     print()
+    print("Duración mínima en tv shows")
     print(minimun(dft,"duration"))
+    print("Duración máxima en tv shows")
     print(maximun(dft,"duration"))
     print()
+    print("Año mínimo de lanzamiento de pelicula")
     print(minimun(dfm,"release_year"))
+    print("Año máximo de lanzamiento de pelicula")
     print(maximun(dfm,"release_year"))
     print()
+    print("Año mínimo de lanzamiento de tv shows")
     print(minimun(dft,"release_year"))
+    print("Año máximo de lanzamiento de tv shows")
     print(maximun(dft,"release_year"))
+    print()
 
     dfml = dfm[dfm['duration'] >= 90]
     dfmc = dfm[dfm['duration'] < 90]
     dftl = dft[dft['duration'] >= 3]
     dftc = dft[dft['duration'] < 3]
+
+    print("Número de observaciones de películas de más de 90'")
+    print(count(dfml['duration']))
+    print("Número de observaciones de películas de menos de 90'")
+    print(count(dfmc['duration']))
+    print("Número de observaciones de tv shows de más de 2 temporadas")
+    print(count(dftl['duration']))
+    print("Número de observaciones de tv shows de 1 o 2 temporadas")
+    print(count(dftc['duration']))
+    print()
+
+    print("Número de valores ausentes (missing) de películas de más de 90'")
+    print(count_null(dfml['duration']))
+    print("Número de valores ausentes (missing) de películas de menos de 90'")
+    print(count_null(dfmc['duration']))
+    print("Número de valores ausentes (missing) de tv shows de más de 2 temporadas")
+    print(count_null(dftl['duration']))
+    print("Número de valores ausentes (missing) de 1 o 2 temporadas")
+    print(count_null(dftc['duration']))
+    print()
+
+    print("Mediana de películas de más de 90'")
+    print(np.median(dfml['duration']))
+    print("Mediana de películas de menos de 90'")
+    print(np.median(dfmc['duration']))
+    print("Mediana de tv shows de más de 2 temporadas")
+    print(np.median(dftl['duration']))
+    print("Mediana de 1 o 2 temporadas")
+    print(np.median(dftc['duration']))
+    print()
+
+    print("Media de películas de más de 90'")
+    print("{:.2f}".format(np.average(dfml['duration'])))
+    print("Media de películas de menos de 90'")
+    print("{:.2f}".format(np.average(dfmc['duration'])))
+    print("Media de tv shows de más de 2 temporadas")
+    print("{:.2f}".format(np.average(dftl['duration'])))
+    print("Media de 1 o 2 temporadas")
+    print("{:.2f}".format(np.average(dftc['duration'])))
+    print()
+
+    print("Varianza de películas de más de 90'")
+    print("{:.2f}".format(np.var(dfml['duration'])))
+    print("Varianza de películas de menos de 90'")
+    print("{:.2f}".format(np.var(dfmc['duration'])))
+    print("Varianza de tv shows de más de 2 temporadas")
+    print("{:.2f}".format(np.var(dftl['duration'])))
+    print("Varianza de 1 o 2 temporadas")
+    print("{:.2f}".format(np.var(dftc['duration'])))
+    print()
+
+    print("Duración mínima en películas de más de 90'")
+    print(minimun(dfml, "duration"))
+    print("Duración máxima en películas de más de 90'")
+    print(maximun(dfml, "duration"))
+    print()
+    print("Duración mínima en películas de menos de 90'")
+    print(minimun(dfmc, "duration"))
+    print("Duración máxima en películas de menos de 90'")
+    print(maximun(dfmc, "duration"))
+    print()
+    print("Duración mínima en tv shows de más de 2 temporadas")
+    print(minimun(dftl, "duration"))
+    print("Duración máxima en tv shows de más de 2 temporadas")
+    print(maximun(dftl, "duration"))
+    print()
+    print("Duración mínima en tv shows de 1 o 2 temporadas")
+    print(minimun(dftc,"duration"))
+    print("Duración máxima en tv shows de 1 o 2 temporadas")
+    print(maximun(dftc,"duration"))
+    print()
+
+    # iu.create_tables_users(dbc)
+    iu.generar_usuario(dbc)
+    df3 = pd.read_sql("SELECT * FROM USER", con=dbc)
+    print(df3)
     # db.create_tables()
     # db.import_data(dbc,".\\res\\data.txt")
     # db_connector = get_connection()

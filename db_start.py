@@ -48,7 +48,8 @@ def add_tvshow(f, str):
     # STR_TO_DATE("August 10 2017", "%M %d %Y")
     # cur.execute(
     #     "INSERT INTO TV_SHOW (show_id, title, director, casting, country, date_added, release_year, rating, duration, listed_in, description) " +
-    #     "VALUES (\"" + a[0] + "\",\"" + a[2] + "\",\"" + a[3] + "\",\"" + a[4] + "\",\"" + a[5] + "\",\"" + a[6] + "\",\"" + a[7] + "\",\"" + a[8] + "\",\"" + a[9] + "\",\"" + a[10] + "\",\"" + a[11] + "\");"
+    #     "VALUES (\"" + a[0] + "\",\"" + a[2] + "\",\"" + a[3] + "\",\"" + a[4] + "\",\"" + a[5] + "\",\"" + a[
+    #         6] + "\",\"" + a[7] + "\",\"" + a[8] + "\",\"" + a[9] + "\",\"" + a[10] + "\",\"" + a[11] + "\");"
     # )
 
 
