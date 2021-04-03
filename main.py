@@ -9,23 +9,23 @@ def get_connection():
         host="127.0.0.1",
         port="3306",
         user="root",
-        passwd="",
+        passwd="Lechugaa10016",
         auth_plugin='mysql_native_password',
-        database='db_practica'
+        database='table_practica'
     )
     return db_connection
 
-'''
-def load_to_dataframeGeneral(db_conn):
+
+'''def load_to_dataframeGeneral(db_conn):
     df = pd.read_sql("SELECT * FROM table_practica2 WHERE typeShow =\"TV Show\"", con=db_conn)
     pd.set_option('display.max_columns', None)
     desired_width = 320
     pd.set_option('display.width', desired_width)
     return df
-
+'''
 
 def load_to_dataframeSeries(db_conn):
-    dfSeries = pd.read_sql("SELECT * FROM table_practica2 WHERE typeShow =\"TV Show\"", con=db_conn)
+    dfSeries = pd.read_sql("SELECT * FROM TV_SHOW", con=db_conn)
     pd.set_option('display.max_columns', None)
     desired_width = 320
     pd.set_option('display.width', desired_width)
@@ -33,7 +33,7 @@ def load_to_dataframeSeries(db_conn):
 
 
 def load_to_dataframePeliculas(db_conn):
-    dfPeliculas = pd.read_sql("SELECT * FROM table_practica2 WHERE typeShow =\"Movie\"", con=db_conn)
+    dfPeliculas = pd.read_sql("SELECT * FROM MOVIE", con=db_conn)
     pd.set_option('display.max_columns', None)
     desired_width = 320
     pd.set_option('display.width', desired_width)
@@ -43,13 +43,12 @@ def load_to_dataframePeliculas(db_conn):
 connection = get_connection()
 dfShows = load_to_dataframeSeries(connection)
 dfMovies = load_to_dataframePeliculas(connection)
-dfGeneral = load_to_dataframeGeneral(connection)
 
-# print(dfShows)
+print(dfShows)
 print(dfMovies)
 
 
-def numeroMuestras(dfGeneral):
+'''def numeroMuestras(dfGeneral):
     return pd.notna(dfGeneral)
 
 
@@ -117,11 +116,11 @@ def count(dbc):
     print(dfm)
     return dfm.notnull().sum() + dft.notnull().sum()
 
-if __name__ == '__main__':
+'''if __name__ == '__main__':
     dbc = get_connection();
     print(count(dbc))
     # db.create_tables()
     # db.import_data(dbc,"C:\\Users\\amora\\Downloads\\data.txt")
-    '''db_connector = get_connection()
+    db_connector = get_connection()
     df = load_to_dataframe(db_connector)
     calculo_duracion(df)'''
