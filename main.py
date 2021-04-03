@@ -2,6 +2,7 @@ import mysql.connector
 import numpy as np
 import pandas as pd
 import db_start as db
+import config
 
 
 def get_connection():
@@ -23,7 +24,7 @@ def get_connection():
     pd.set_option('display.width', desired_width)
     return df
 '''
-
+'''
 def load_to_dataframeSeries(db_conn):
     dfSeries = pd.read_sql("SELECT * FROM TV_SHOW", con=db_conn)
     pd.set_option('display.max_columns', None)
@@ -47,7 +48,7 @@ dfMovies = load_to_dataframePeliculas(connection)
 print(dfShows)
 print(dfMovies)
 
-
+'''
 '''def numeroMuestras(dfGeneral):
     return pd.notna(dfGeneral)
 
@@ -116,11 +117,11 @@ def count(dbc):
     print(dfm)
     return dfm.notnull().sum() + dft.notnull().sum()
 
-'''if __name__ == '__main__':
-    dbc = get_connection();
-    print(count(dbc))
+if __name__ == '__main__':
+    dbc = config.get_connection(2);
+    # print(count(dbc))
     # db.create_tables()
-    # db.import_data(dbc,"C:\\Users\\amora\\Downloads\\data.txt")
-    db_connector = get_connection()
-    df = load_to_dataframe(db_connector)
-    calculo_duracion(df)'''
+    db.import_data(dbc,".\\res\\data.txt")
+    # db_connector = get_connection()
+    # df = load_to_dataframe(db_connector)
+    # calculo_duracion(df)
