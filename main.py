@@ -1,6 +1,7 @@
 import mysql.connector
 import numpy as np
 import pandas as pd
+import db_start as db
 
 
 def get_connection():
@@ -8,7 +9,7 @@ def get_connection():
         host="127.0.0.1",
         port="3306",
         user="root",
-        passwd="",
+        passwd="Lechugaa10016",
         auth_plugin='mysql_native_password',
         database='table_practica'
     )
@@ -44,7 +45,7 @@ dfShows = load_to_dataframeSeries(connection)
 dfMovies = load_to_dataframePeliculas(connection)
 dfGeneral = load_to_dataframeGeneral(connection)
 
-print(dfShows)
+# print(dfShows)
 print(dfMovies)
 
 
@@ -54,13 +55,29 @@ def numeroMuestras(dfGeneral):
 
 withoutMissing = numeroMuestras(dfGeneral)
 
-print(withoutMissing)
 
-'''def calculo_duracion(dfGeneral):
-    duracion = df.get("duration")
+# print(withoutMissing)
+
+def calculo_duracionPelis(dfMovies):
+    n = len(dfMovies.index)
+    t = 0
+    for i in range(0, 500):
+        x = dfMovies.at[i, 'duration']
+        a = x.split(" ")
+        print(i, a)
+        dur = int(a[0])
+        t += dur
+    print(t)
+
+
+calculo_duracionPelis(dfMovies)
+print(dfMovies['duration'])
+
+'''def calculo_duracionSeries(dfShows):
+    duracion = dfShows.get("duration")
     min, season = []
-    for o in duracion:def calculo_duracion(df):
-    duracion = df.get("duration")
+    for o in duracion:def calculo_duracionSeries(dfShows):
+    duracion = dfShows.get("duration")
     min, season = []
     for o in duracion:
         aux = int(o.split(" ")[0])
