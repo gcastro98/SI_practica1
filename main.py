@@ -9,13 +9,13 @@ def get_connection():
         host="127.0.0.1",
         port="3306",
         user="root",
-        passwd="Lechugaa10016",
+        passwd="",
         auth_plugin='mysql_native_password',
-        database='table_practica'
+        database='db_practica'
     )
     return db_connection
 
-
+'''
 def load_to_dataframeGeneral(db_conn):
     df = pd.read_sql("SELECT * FROM table_practica2 WHERE typeShow =\"TV Show\"", con=db_conn)
     pd.set_option('display.max_columns', None)
@@ -73,7 +73,7 @@ def calculo_duracionPelis(dfMovies):
 calculo_duracionPelis(dfMovies)
 print(dfMovies['duration'])
 
-'''def calculo_duracionSeries(dfShows):
+def calculo_duracionSeries(dfShows):
     duracion = dfShows.get("duration")
     min, season = []
     for o in duracion:def calculo_duracionSeries(dfShows):
@@ -109,9 +109,19 @@ if __name__ == '__main__':
     print("\nTVShows:")
     print(f'Valor medio de duracion de las TVSHOWS: {np.average(season):,.2f} temporadas')
     print(f'Valor de la desviacion tipica de la duracion de las TVSHOWS: {np.std(season):,.2f}')
+'''
 
+def count(dbc):
+    dfm = pd.read_sql("SELECT *  FROM MOVIE", con=dbc)
+    dft = pd.read_sql("SELECT *  FROM TV_SHOW", con=dbc)
+    print(dfm)
+    return dfm.notnull().sum() + dft.notnull().sum()
 
 if __name__ == '__main__':
-    db_connector = get_connection()
+    dbc = get_connection();
+    print(count(dbc))
+    # db.create_tables()
+    # db.import_data(dbc,"C:\\Users\\amora\\Downloads\\data.txt")
+    '''db_connector = get_connection()
     df = load_to_dataframe(db_connector)
     calculo_duracion(df)'''
