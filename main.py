@@ -143,6 +143,7 @@ if __name__ == '__main__':
     dfm = pd.read_sql("SELECT *  FROM MOVIE", con=dbc)
     dft = pd.read_sql("SELECT *  FROM TV_SHOW", con=dbc)
     print()
+    print(len(dfm))
     print()
     print("Número de muestras (valores distintos de missing).")
     print(count(dfm) + count(dft))
@@ -256,6 +257,7 @@ if __name__ == '__main__':
 
     # iu.create_tables_users(dbc)
     iu.generar_usuario(dbc)
+    iu.generar_visionados(dbc)
     df3 = pd.read_sql("SELECT * FROM USER", con=dbc)
     print(df3)
     # db.create_tables()

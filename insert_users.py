@@ -1,4 +1,4 @@
-from random import random as rn
+import random as rn
 import random_username.generate as ran
 import main as mn
 import pandas as pd
@@ -29,20 +29,28 @@ def create_tables_users(dbc):
 
 def generar_usuario(dbc):
     cur = dbc.cursor()
-    for i in range(0, 40):
+    for i in range(0, 20):
         print(
             "INSERT INTO USER (user_id, username) VALUES (\"" + "u" + str(i) + "\",\"" + ran.generate_username(1)[0] +"\");"
         )
-        s = cur.execute(
-            "INSERT INTO USER (user_id, username) VALUES (\"" + "u" + str(i) + "\",\"" + ran.generate_username(1)[0] +"\");"
-        )
-        print(s)
+        # cur.execute(
+        #     "INSERT INTO USER (user_id, username) VALUES (\"" + "u" + str(i) + "\",\"" + ran.generate_username(1)[0] +"\");"
+        # )
 
 def generar_visionados(dbc):
     cur = dbc.cursor()
     df3 = pd.read_sql("SELECT * FROM USER", con=dbc)
+    dfm = pd.read_sql("SELECT * FROM MOVIE", con=dbc)
+    dft = pd.read_sql("SELECT * FROM TV_SHOW", con=dbc)
     for i in df3["user_id"]:
-        s = cur.execute(
-            "INSERT INTO VIEWING (user_id, show_id, viewing_date, type_show, rating) VALUES (\"" + i + "\",\"s" +str((rn.random()*7787)) + "\",NOW(),\"" + +"\");"
-        )
-        print(s)
+        for j in range(0,1):
+            if ((rn.random()*2) % 2 == 0):
+                x = int(rn.random()* len(dfm))
+                print(
+                    "INSERT INTO VIEWING (user_id, show_id, viewing_date, type_show, rating) VALUES (\"" + i + "\",\"" + dfm["show_id"].iloc[x] + "\",NOW(),\"" + dfm[x]["type_show"]+ "\",\"" + str(rn.random() * 6) +"\");"
+                )
+            else:
+                x = int(rn.random()* len(dft))
+                print(
+                    "INSERT INTO VIEWING (user_id, show_id, viewing_date, type_show, rating) VALUES (\"" + i + "\",\"" + dft["show_id"].iloc[x] + "\",NOW(),\"" + dft[x]["type_show"]+ "\",\"" + str(rn.random() * 6) +"\");"
+                )
