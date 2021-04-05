@@ -4,6 +4,7 @@ import pandas as pd
 import db_start as db
 import config
 import insert_users as iu
+import matplotlib.pyplot as plt
 
 
 def get_connection():
@@ -254,12 +255,34 @@ if __name__ == '__main__':
     print("Duración máxima en tv shows de 1 o 2 temporadas")
     print(maximun(dftc,"duration"))
     print()
+    print()
+    # dfv = pd.read_sql("SELECT *  FROM VIEWING WHERE type_show = \"MOVIE\"", con=dbc)
+    # dfg = dfv.groupby(['show_id']).agg(['count'])["user_id"]
+    # print(dfg)
+    # dfgh = dfg.sort_values(by="count",ascending=False).head(10)
+    # print(dfg.sort_values(by="count",ascending=False).head(10))
+    # print(dfg.max())
+    # ax = dfgh.plot.bar(rot=0)
+    # print(ax)
+    # plt.show()
+    def grafico_peliculas():
+        plt.tight_layout()
+        dfv = pd.read_sql("SELECT movie.show_id,movie.title,count(movie.show_id) as count FROM movie,viewing WHERE movie.show_id=viewing.show_id group by show_id;", con=dbc)
+        dfvh = dfv.sort_values(by="count").tail(10)
+        ax = dfvh.plot.barh(x='title',rot=0,figsize=(10,10),xlabel="Películas",ylabel="Visionados", title="Top 10 visionados por película", legend="Visionados")
+        ax.legend(["Visionados"])
+        print(ax)
+        plt.tight_layout()
+        plt.show()
 
+
+    print("A")
+    #
     # iu.create_tables_users(dbc)
-    iu.generar_usuario(dbc)
-    iu.generar_visionados(dbc)
-    df3 = pd.read_sql("SELECT * FROM USER", con=dbc)
-    print(df3)
+    # iu.generar_usuario(dbc)
+    # iu.generar_visionados(dbc)
+    # df3 = pd.read_sql("SELECT * FROM USER", con=dbc)
+    # print(df3)
     # db.create_tables()
     # db.import_data(dbc,".\\res\\data.txt")
     # db_connector = get_connection()
