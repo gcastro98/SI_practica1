@@ -138,9 +138,73 @@ def count(df):
 def count_null(df):
     return df.isnull().sum()
 
+def grafico_visionados(title):
+    # plt.tight_layout()
+    if (title == 'Peliculas'):
+        df = pd.read_sql("SELECT movie.show_id,movie.title,count(movie.show_id) as count FROM movie,viewing WHERE movie.show_id=viewing.show_id group by show_id;",
+        con=dbc)
+    elif (title == 'Series'):
+        df = pd.read_sql(
+        "SELECT tv_show.show_id,tv_show.title,count(tv_show.show_id) as count FROM tv_show,viewing WHERE tv_show.show_id=viewing.show_id group by show_id;",
+        con=dbc)
+    aux = "Top 10 visionados por " + title
+    dfvh = df.sort_values(by="count").tail(10)
+    ax = dfvh.plot.barh(x='title',rot=0,figsize=(10,10),xlabel=title,ylabel="Visionados", title=aux, legend="Visionados")
+    ax.legend(["Visionados"])
+    print(ax)
+    plt.tight_layout()
+    plt.show()
+
+def grafico_medias_peliculas():
+    dfgt = pd.read_sql(
+        "SELECT movie.show_id, movie.title, count(movie.show_id) as count FROM movie,viewing WHERE movie.show_id=viewing.show_id AND movie.duration < 90 group by movie.show_id;",
+        con=dbc)
+    dflt =pd.read_sql(
+        "SELECT movie.show_id, movie.title, count(movie.show_id) as count FROM movie,viewing WHERE movie.show_id=viewing.show_id AND movie.duration >= 90 group by movie.show_id;",
+        con=dbc)
+    media_gt = np.average(dfgt["count"])
+    media_lt = np.average(dflt["count"])
+    df = pd.DataFrame({'title': ['Peliculas de mas de 90 minutos', 'Peliculas de menos de 90 minutos'], 'media': [media_gt, media_lt]})
+    ax = df.plot.barh(x='title',rot=0,figsize=(10,10),xlabel="Duracion de peliculas",ylabel="Visionados", title="Media de visionados")
+    ax.legend(["Visionados"])
+    print(df)
+    print(ax)
+    plt.tight_layout()
+    plt.show()
+
+def grafico_medias_series():
+    dfgt = pd.read_sql(
+        "SELECT tv_show.show_id, tv_show.title, count(tv_show.show_id) as count FROM tv_show,viewing WHERE tv_show.show_id=viewing.show_id AND tv_show.duration <= 2 group by tv_show.show_id;",
+        con=dbc)
+    dflt =pd.read_sql(
+        "SELECT tv_show.show_id, tv_show.title, count(tv_show.show_id) as count FROM tv_show,viewing WHERE tv_show.show_id=viewing.show_id AND tv_show.duration > 2 group by tv_show.show_id;",
+        con=dbc)
+    media_gt = np.average(dfgt["count"])
+    media_lt = np.average(dflt["count"])
+    df = pd.DataFrame({'title': ['Series de mas de 2 temporadas', 'Series de menos de 2 temporadas'], 'media': [media_gt, media_lt]})
+    ax = df.plot.barh(x='title',rot=0,figsize=(10,10),xlabel="Duracion de Series",ylabel="Visionados", title="Media de visionados")
+    ax.legend(["Visionados"])
+    print(df)
+    print(ax)
+    plt.tight_layout()
+    plt.show()
 
 if __name__ == '__main__':
     dbc = config.get_connection(2);
+    # db.import_data(dbc, ".\\res\\data.txt")
+    # iu.create_tables_users(dbc)
+
+    #iu.generar_usuario(dbc)
+    #iu.generar_visionados(dbc)
+
+    # iu.generar_usuario(dbc)
+    # iu.generar_visionados(dbc)
+    # df3 = pd.read_sql("SELECT * FROM USER", con=dbc)
+    # print(df3)
+    # db.import_data(dbc,".\\res\\data.txt")
+    # db_connector = get_connection()
+    # df = load_to_dataframe(db_connector)
+    # calculo_duracion(df)
     dfm = pd.read_sql("SELECT *  FROM MOVIE", con=dbc)
     dft = pd.read_sql("SELECT *  FROM TV_SHOW", con=dbc)
     print()
@@ -265,19 +329,13 @@ if __name__ == '__main__':
     # ax = dfgh.plot.bar(rot=0)
     # print(ax)
     # plt.show()
-    def grafico_peliculas():
-        plt.tight_layout()
-        dfv = pd.read_sql("SELECT movie.show_id,movie.title,count(movie.show_id) as count FROM movie,viewing WHERE movie.show_id=viewing.show_id group by show_id;", con=dbc)
-        dfvh = dfv.sort_values(by="count").tail(10)
-        ax = dfvh.plot.barh(x='title',rot=0,figsize=(10,10),xlabel="Películas",ylabel="Visionados", title="Top 10 visionados por película", legend="Visionados")
-        ax.legend(["Visionados"])
-        print(ax)
-        plt.tight_layout()
-        plt.show()
 
 
-    print("A")
-    #
+    grafico_visionados("Peliculas")
+    grafico_visionados("Series")
+    grafico_medias_peliculas()
+    grafico_medias_series()
+
     # iu.create_tables_users(dbc)
     # iu.generar_usuario(dbc)
     # iu.generar_visionados(dbc)

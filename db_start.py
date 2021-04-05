@@ -103,6 +103,7 @@ def import_data(dbc, path):
         fout = open("insert.sql", "w", encoding="utf-8")
     except IOError:
         fout = open("insert.sql", "x", encoding="utf-8")
+    f = open(path, "r", encoding="utf-8")
     for x in f:
         if x.__contains__(";Movie;"):
             add_movie(fout, x)

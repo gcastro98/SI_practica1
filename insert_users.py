@@ -10,8 +10,8 @@ import mysql.connector
 
 def create_tables_users(dbc):
     cur = dbc.cursor()
-    cur.execute("DROP TABLE USER")
-    cur.execute("DROP TABLE VIEWING")
+    # cur.execute("DROP TABLE USER")
+    # cur.execute("DROP TABLE VIEWING")
     cur.execute("CREATE TABLE USER (" + "\n" +
         "user_id varchar(8) NOT NULL," + "\n" +
         "username varchar(45) NOT NULL," + "\n" +
@@ -30,7 +30,7 @@ def create_tables_users(dbc):
 
 def generar_usuario(dbc):
     cur = dbc.cursor()
-    for i in range(0, 13):
+    for i in range(0, 15):
         print(
             "INSERT INTO USER (user_id, username) VALUES (\"" + "u" + str(i) + "\",\"" + ran.generate_username(1)[0] +"\");"
         )
@@ -49,7 +49,7 @@ def generar_visionados(dbc):
     dft = pd.read_sql("SELECT * FROM TV_SHOW", con=dbc)
     for i in df3["user_id"]:
         array = []
-        for j in range(0,300):
+        for j in range(0,1000):
             if (int((rn.random()*2)) % 2 == 0):
                 x = int(rn.random()* len(dfm))
                 if (not x in array):
