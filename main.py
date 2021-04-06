@@ -41,6 +41,7 @@ def count_null(df):
 def numero_muestras(dfm, dft):
     print("Número de muestras (valores distintos de missing).")
     print(count(dfm) + count(dft))
+    print()
 
 def medias(dfm, dft):
     print("Media de la columna duración para peliculas")
@@ -113,6 +114,82 @@ def ausentes_series(dftl,dftc):
     print(count_null(dftc['duration']))
     print()
 
+def mediana_peliculas(dfml, dfmc):
+    print("Mediana de películas de más de 90'")
+    print(np.median(dfml['duration']))
+    print("Mediana de películas de menos de 90'")
+    print(np.median(dfmc['duration']))
+
+
+def mediana_series(dftl,dftc):
+    print("Mediana de tv shows de más de 2 temporadas")
+    print(np.median(dftl['duration']))
+    print("Mediana de 1 o 2 temporadas")
+    print(np.median(dftc['duration']))
+    print()
+
+
+def media_peliculas(dfml, dfmc):
+    print("Media de películas de más de 90'")
+    print("{:.2f}".format(np.average(dfml['duration'])))
+    print("Media de películas de menos de 90'")
+    print("{:.2f}".format(np.average(dfmc['duration'])))
+
+
+def media_series(dftl,dftc):
+    print("Media de tv shows de más de 2 temporadas")
+    print("{:.2f}".format(np.average(dftl['duration'])))
+    print("Media de 1 o 2 temporadas")
+    print("{:.2f}".format(np.average(dftc['duration'])))
+    print()
+
+
+def varianza_peliculas(dfml, dfmc):
+    print("Varianza de películas de más de 90'")
+    print("{:.2f}".format(np.var(dfml['duration'])))
+    print("Varianza de películas de menos de 90'")
+    print("{:.2f}".format(np.var(dfmc['duration'])))
+
+
+def varianza_series(dftl,dftc):
+    print("Varianza de tv shows de más de 2 temporadas")
+    print("{:.2f}".format(np.var(dftl['duration'])))
+    print("Varianza de 1 o 2 temporadas")
+    print("{:.2f}".format(np.var(dftc['duration'])))
+    print()
+
+
+def duraciones_peliculas_largas(dfml):
+    print("Duración mínima en películas de más de 90'")
+    print(minimun(dfml, "duration"))
+    print("Duración máxima en películas de más de 90'")
+    print(maximun(dfml, "duration"))
+    print()
+
+
+def duraciones_peliculas_cortas(dfmc):
+    print("Duración mínima en películas de menos de 90'")
+    print(minimun(dfmc, "duration"))
+    print("Duración máxima en películas de menos de 90'")
+    print(maximun(dfmc, "duration"))
+    print()
+
+
+def duraciones_series_largas(dftl):
+    print("Duración mínima en tv shows de más de 2 temporadas")
+    print(minimun(dftl, "duration"))
+    print("Duración máxima en tv shows de más de 2 temporadas")
+    print(maximun(dftl, "duration"))
+    print()
+
+
+def duraciones_series_cortas(dftc):
+    print("Duración mínima en tv shows de 1 o 2 temporadas")
+    print(minimun(dftc, "duration"))
+    print("Duración máxima en tv shows de 1 o 2 temporadas")
+    print(maximun(dftc, "duration"))
+    print()
+
 def grafico_visionados(title):
     # plt.tight_layout()
     if (title == 'Peliculas'):
@@ -165,6 +242,8 @@ def grafico_medias_series():
     plt.show()
 
 
+
+
 if __name__ == '__main__':
     #Inicializamos la conexión con la BBDD
     dbc = config.get_connection(2);
@@ -184,18 +263,13 @@ if __name__ == '__main__':
     # df = load_to_dataframe(db_connector)
     # calculo_duracion(df)
 
+    #Creación de los dataframes
     dfm = creacion_dfm(dbc)
     dft = creacion_dft(dbc)
 
-    '''print()
-    print(len(dfm))
-    print()'''
+    print("Ejercicio 2:")
     numero_muestras(dfm, dft)
-
-    print()
-
     medias(dfm, dft)
-
     desviaciones(dfm, dft)
 
     duraciones_peliculas(dfm)
@@ -203,7 +277,9 @@ if __name__ == '__main__':
 
     anhos_peliculas(dfm)
     anhos_series(dft)
+    print("Fin Ejercicio 2")
 
+    print("Ejercicio 3:")
     dfml = dfm[dfm['duration'] >= 90]
     dfmc = dfm[dfm['duration'] < 90]
 
@@ -216,57 +292,22 @@ if __name__ == '__main__':
     ausentes_peliculas(dfml, dfmc)
     ausentes_series(dftl,dftc)
 
-    print("Mediana de películas de más de 90'")
-    print(np.median(dfml['duration']))
-    print("Mediana de películas de menos de 90'")
-    print(np.median(dfmc['duration']))
-    print("Mediana de tv shows de más de 2 temporadas")
-    print(np.median(dftl['duration']))
-    print("Mediana de 1 o 2 temporadas")
-    print(np.median(dftc['duration']))
-    print()
+    mediana_peliculas(dfml, dfmc)
+    mediana_series(dftl,dftc)
 
-    print("Media de películas de más de 90'")
-    print("{:.2f}".format(np.average(dfml['duration'])))
-    print("Media de películas de menos de 90'")
-    print("{:.2f}".format(np.average(dfmc['duration'])))
-    print("Media de tv shows de más de 2 temporadas")
-    print("{:.2f}".format(np.average(dftl['duration'])))
-    print("Media de 1 o 2 temporadas")
-    print("{:.2f}".format(np.average(dftc['duration'])))
-    print()
+    media_peliculas(dfml, dfmc)
+    media_series(dftl,dftc)
 
-    print("Varianza de películas de más de 90'")
-    print("{:.2f}".format(np.var(dfml['duration'])))
-    print("Varianza de películas de menos de 90'")
-    print("{:.2f}".format(np.var(dfmc['duration'])))
-    print("Varianza de tv shows de más de 2 temporadas")
-    print("{:.2f}".format(np.var(dftl['duration'])))
-    print("Varianza de 1 o 2 temporadas")
-    print("{:.2f}".format(np.var(dftc['duration'])))
-    print()
+    varianza_peliculas(dfml, dfmc)
+    varianza_series(dftl,dftc)
 
-    print("Duración mínima en películas de más de 90'")
-    print(minimun(dfml, "duration"))
-    print("Duración máxima en películas de más de 90'")
-    print(maximun(dfml, "duration"))
+    duraciones_peliculas_largas(dfml)
+    duraciones_peliculas_cortas(dfmc)
+    duraciones_series_largas(dftl)
+    duraciones_series_cortas(dftc)
     print()
-    print("Duración mínima en películas de menos de 90'")
-    print(minimun(dfmc, "duration"))
-    print("Duración máxima en películas de menos de 90'")
-    print(maximun(dfmc, "duration"))
-    print()
-    print("Duración mínima en tv shows de más de 2 temporadas")
-    print(minimun(dftl, "duration"))
-    print("Duración máxima en tv shows de más de 2 temporadas")
-    print(maximun(dftl, "duration"))
-    print()
-    print("Duración mínima en tv shows de 1 o 2 temporadas")
-    print(minimun(dftc,"duration"))
-    print("Duración máxima en tv shows de 1 o 2 temporadas")
-    print(maximun(dftc,"duration"))
-    print()
-    print()
+    print("Fin Ejercicio 3")
+
     # dfv = pd.read_sql("SELECT *  FROM VIEWING WHERE type_show = \"MOVIE\"", con=dbc)
     # dfg = dfv.groupby(['show_id']).agg(['count'])["user_id"]
     # print(dfg)
