@@ -33,9 +33,6 @@ def generar_usuario(dbc):
         print(
             "INSERT INTO USER (user_id, username) VALUES (\"" + "u" + str(i) + "\",\"" + ran.generate_username(1)[0] +"\");"
         )
-        # cur.execute(
-        #     "INSERT INTO USER (user_id, username) VALUES (\"" + "u" + str(i) + "\",\"" + ran.generate_username(1)[0] +"\");"
-        # )
 
 def generar_visionados(dbc):
     try:

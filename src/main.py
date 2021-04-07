@@ -188,7 +188,6 @@ def duraciones_series_cortas(dftc):
     print()
 
 def grafico_visionados(title):
-    # plt.tight_layout()
     if (title == 'Peliculas'):
         df = pd.read_sql("SELECT movie.show_id,movie.title,count(movie.show_id) as count FROM movie,viewing WHERE movie.show_id=viewing.show_id group by show_id;",
         con=dbc)
@@ -262,8 +261,8 @@ if __name__ == '__main__':
     dfml = dfm[dfm['duration'] >= 90]
     dfmc = dfm[dfm['duration'] < 90]
 
-    dftl = dft[dft['duration'] >= 3]
-    dftc = dft[dft['duration'] < 3]
+    dftl = dft[dft['duration'] > 2]
+    dftc = dft[dft['duration'] <= 2]
 
     observaciones_peliculas(dfml, dfmc)
     observaciones_series(dftl,dftc)
